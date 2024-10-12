@@ -1,6 +1,7 @@
 # Update the version "0.0.0" to the release found here:
 # https://github.com/bazelbuild/rules_python/releases.
 bazel_dep(name = "rules_python", version = "0.36.0")
+bazel_dep(name = "aspect_rules_py", version = "0.7.3")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
@@ -9,3 +10,24 @@ pip.parse(
     requirements_lock = "//:requirements.txt",
 )
 use_repo(pip, "my_deps")
+
+bazel_dep(name = "rules_oci", version = "2.0.0")
+# For testing, we also recommend https://registry.bazel.build/modules/container_structure_test
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+
+# Declare external images you need to pull, for example:
+oci.pull(
+    name = "ubuntu",
+    image = "ubuntu",
+    platforms = ["linux/amd64"],
+    # 'latest' is not reproducible, but it's convenient.
+    # During the build we print a WARNING message that includes recommended 'digest' and 'platforms'
+    # values which you can use here in place of 'tag' to pin for reproducibility.
+    tag = "latest",
+)
+
+# For each oci.pull call, repeat the "name" here to expose them as dependencies.
+use_repo(oci, "ubuntu", "ubuntu_linux_amd64")
+
+bazel_dep(name = "aspect_bazel_lib", version = "2.9.1")
