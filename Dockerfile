@@ -32,6 +32,6 @@ RUN bazelisk build //:app
 EXPOSE 5000
 
 # Command to run the Flask app
-# CMD ["python", "app.py"]
+CMD ["python", "app.py"]
 
-CMD ["bazelisk", "run", "//:app"]
+# CMD ["bazelisk", "run", "//:app"]
