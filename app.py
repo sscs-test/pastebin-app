@@ -90,3 +90,6 @@ def get_notes():
     
     return jsonify({"notes": user_notes}), 200
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+
